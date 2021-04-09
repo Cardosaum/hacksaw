@@ -22,6 +22,14 @@ pub(crate) struct Opt {
     pub(crate) guide_thickness: u16,
 
     #[structopt(
+        short = "k",
+        long = "keep-guide",
+        // default_value = "false",
+        help = "Whether to keep guide lines while selecting or not"
+    )]
+    pub(crate) keep_guide: bool,
+
+    #[structopt(
         short = "s",
         long = "select-thickness",
         default_value = "1",

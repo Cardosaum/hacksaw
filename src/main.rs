@@ -157,7 +157,7 @@ fn main() -> Result<(), String> {
                     selection = xcb::Rectangle::new(left_x, top_y, 0, 0);
                 }
 
-                if in_selection {
+                if in_selection && !opt.keep_guide {
                     let rects = [
                         // Selection rectangle
                         xcb::Rectangle::new(
@@ -181,13 +181,42 @@ fn main() -> Result<(), String> {
                         xcb::Rectangle::new(left_x, bottom_y, width + line_width, line_width),
                     ];
                     set_shape(&conn, window, &rects);
+                } else if in_selection && opt.keep_guide {
+                    let rects = vec![
+                        // Selection rectangle
+                        xcb::Rectangle::new(
+                            left_x - line_width as i16,
+                            top_y,
+                            line_width,
+                            height + line_width,
+                        ),
+                        xcb::Rectangle::new(
+                            left_x - line_width as i16,
+                            top_y - line_width as i16,
+                            width + line_width,
+                            line_width,
+                        ),
+                        xcb::Rectangle::new(
+                            right_x,
+                            top_y - line_width as i16,
+                            line_width,
+                            height + line_width,
+                        ),
+                        xcb::Rectangle::new(left_x, bottom_y, width + line_width, line_width),
+                    ];
+                    let rects2 = build_guides(
+                        screen_rect,
+                        xcb::Point::new(motion.event_x(), motion.event_y()),
+                        guide_width,
+                    ).to_vec();
+                    let rects3 = [rects, rects2].concat();
+                    set_shape(&conn, window, &rects3);
                 } else if !opt.no_guides {
                     let rects = build_guides(
                         screen_rect,
                         xcb::Point::new(motion.event_x(), motion.event_y()),
                         guide_width,
                     );
-
                     set_shape(&conn, window, &rects);
                 }
 
