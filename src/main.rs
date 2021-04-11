@@ -185,24 +185,24 @@ fn main() -> Result<(), String> {
                     let rects = vec![
                         // Selection rectangle
                         xcb::Rectangle::new(
-                            left_x - line_width as i16,
+                            left_x,
                             top_y,
                             line_width,
-                            height + line_width,
+                            height ,
                         ),
                         xcb::Rectangle::new(
-                            left_x - line_width as i16,
-                            top_y - line_width as i16,
-                            width + line_width,
+                            left_x,
+                            top_y,
+                            width ,
                             line_width,
                         ),
                         xcb::Rectangle::new(
                             right_x,
-                            top_y - line_width as i16,
+                            top_y,
                             line_width,
-                            height + line_width,
+                            height ,
                         ),
-                        xcb::Rectangle::new(left_x, bottom_y, width + line_width, line_width),
+                        xcb::Rectangle::new(left_x + line_width as i16, bottom_y, width, line_width),
                     ];
                     let rects2 = build_guides(
                         screen_rect,
